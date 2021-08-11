@@ -1,3 +1,11 @@
+/**
+ * Add two numbers together
+ * @param  {Number} num1 The first number
+ * @param  {Number} num2 The second number
+ * @return {Number}      The total of the two numbers
+ */
+
+
 let userInput = "6";
 let isPlayer1Turn = true;
 let secondSquarePick = false;
@@ -7,17 +15,21 @@ let firstSelectionIndex;
 while (true) {
     // userInput = prompt("Please enter a number");
     if (checkInputErrors(userInput)) break;
-
 }
 
-// Takes in input in the form of a string checks constraints are met
-// returns bool
+
+/**
+ * Checks if input keeps to certain constraints
+ * @param {String} input The user input 
+ * @return {boolean}
+ */
 function checkInputErrors(input) {
     if (isNaN(input))
         alert("Please enter a number!");
 
-    input = parseInt(input);
-    if (input < 4)
+    // If a game is less than 4 squares there it is entirely unfair, there is no chance
+    // that the second player can win
+    else if (input < 4)
         alert("Must have atleast 4 squares for game to be somewhat fair!");
     else return true;
     return false;
