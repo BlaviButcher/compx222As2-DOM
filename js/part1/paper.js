@@ -1,11 +1,4 @@
 /**
- * Add two numbers together
- * @param  {Number} num1 The first number
- * @param  {Number} num2 The second number
- * @return {Number}      The total of the two numbers
- */
-
-/**
  * Checks if input keeps to certain constraints
  * @param {String} input The user input 
  * @return {boolean}
@@ -54,6 +47,52 @@ function changeTurns() {
     selectionInfo.selection = 1;
 }
 
+/**
+ * returns if clicked square is adjacent to first
+ * @param {Element} square 
+ * @param {int} index index of first square selection - this is second
+ * @return {boolean}
+ */
+function isAdjacent(square, index) {
+    return (square.index - 1 == index) || (square.index + 1 == index);
+}
+
+function storeAdjacentSquares(squares) {
+    // cases for first and last so underfined isn't stored
+    squares[0].adjacent = [squares[1]];
+    squares[squares.length - 1].adjacent = [squares[squares.length - 2]];
+    // store adjacent
+    for (let i = 1; i < squares.length - 1; i++) {
+        squares[i].adjacent = [squares[i - 1], squares[i + 1]];
+    }
+}
+
+function checkReachability(squares) {
+
+    for (let square of squares) {
+        // if not reachable can skip
+        if (!square.reachable) continue;
+
+        // flag
+        let isReachable = false;
+        // check if any adjacent squares are reachable
+        for (let adjacentSquare of square.adjacent) {
+            if (adjacentSquare.reachable == true) {
+                isReachable = true;
+                break;
+            }
+        }
+        // if no adjacent squares were reachable then this square
+        // can't be
+        if (!isReachable) square.reachable = false;
+    }
+}
+
+
+
+
+
+
 //DEBUG
 let userInput = "6";
 
@@ -73,22 +112,13 @@ while (true) {
     }
 }
 
-/**
- * returns if clicked square is adjacent to first
- * @param {Element} square 
- * @param {int} index index of first square selection - this is second
- * @return {boolean}
- */
-function isAdjacent(square, index) {
-    return (square.index - 1 == index) || (square.index + 1 == index);
-}
-
 // Get container that will hold squares
 let gameContainer = document.getElementById("paper-container");
 drawSquares(userInput);
 
 // get squares
 let squares = document.getElementsByClassName("square");
+storeAdjacentSquares(squares);
 
 // using a for loop rather than a foreach as we need an index, becausewant to be able to store the placement 
 // of square
@@ -113,6 +143,7 @@ for (let i = 0; i < squares.length; i++) {
 
             // if second selection of players turn
             if (selectionInfo.selection == 2) {
+                checkReachability(squares);
                 changeTurns();
                 return;
             }
