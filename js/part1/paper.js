@@ -66,9 +66,13 @@ function storeAdjacentSquares(squares) {
         squares[i].adjacent = [squares[i - 1], squares[i + 1]];
     }
 }
-
+/**
+ * 
+ * @param {HTMLCollectionOf<Element>} squares 
+ * @return {boolean} true if nothing is reachable
+ */
 function checkReachability(squares) {
-
+    isNoReachable = true;
     for (let square of squares) {
         // if not reachable can skip
         if (!square.reachable) continue;
@@ -85,7 +89,18 @@ function checkReachability(squares) {
         // if no adjacent squares were reachable then this square
         // can't be
         if (!isReachable) square.reachable = false;
+        else isNoReachable = false;
     }
+    return isNoReachable
+}
+
+/**
+ * 
+ * @param {boolean} turn true for player 1 false for 2
+ */
+function gameOver(turn) {
+    let player = turn ? "Player 1" : "Player 2";
+    alert(`${player} wins`);
 }
 
 
@@ -143,7 +158,7 @@ for (let i = 0; i < squares.length; i++) {
 
             // if second selection of players turn
             if (selectionInfo.selection == 2) {
-                checkReachability(squares);
+                if (checkReachability(squares)) gameOver(isPlayer1Turn);
                 changeTurns();
                 return;
             }
