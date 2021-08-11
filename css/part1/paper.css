@@ -1,0 +1,17 @@
+body {
+    height: 100vh;
+}
+
+#paper-container {
+    display: flex;
+}
+
+.square {
+    border: 1px solid black;
+    width: 100%;
+}
+.square:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
