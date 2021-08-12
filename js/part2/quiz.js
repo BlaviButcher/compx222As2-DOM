@@ -1,11 +1,33 @@
 let questions = [
     {
         question: "Who can require you to undergo a breath screening test?",
-        image: "url(../../assets/part2/beer.jpg",
-        option1: "Your Mum",
-        option2: "A Police Officer",
-        option3: "Your neighbor",
-        option4: "A man welding a gun",
-        answer: option2
+        image: "../../assets/part2/img/beer.jpg",
+        options: [
+            "Your Mum",
+            "A Police Officer",
+            "Your neighbor",
+            "A man welding a gun",
+        ],
+
+        answer: "2"
     }
 ];
+
+let questionNumber = 1;
+let image = document.getElementsByTagName("img")[0];
+let buttons = document.getElementsByClassName("answer");
+
+
+displayQuestion();
+function displayQuestion() {
+    // set image for current question
+    image.src = questions[questionNumber - 1].image;
+
+    // Fill buttons with options from current question
+    for (let i = 0; i < buttons.length; i++)
+        buttons[i].textContent = questions[questionNumber - 1].options[i];
+}
+
+
+
+

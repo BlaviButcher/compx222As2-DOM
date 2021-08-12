@@ -1,0 +1,14 @@
+body {
+    height: 100vh;
+}
+
+#image-wrap {
+    width: 35%;
+    margin: auto;
+    align-self: center;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
