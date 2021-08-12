@@ -10,10 +10,25 @@
 </head>
 
 <body>
-    <div id="paper-container">
+    <main>
+        <div id="top-page">
+            <h1>The Paper Strip Game</h1>
+            <div id="game-graphics-container">
+                <div id="paper-container">
 
-    </div>
-    <script src="../../js/part1/paper.js"></script>
+                </div>
+            </div>
+        </div>
+        <div class="game-config-container bottom-page">
+            <div id="feedback-container">Enter a number and press play to get started!</div>
+            <div id="input-wrap">
+                <label for="box-count">Number of squares:</label>
+                <input type="text" id="box-count">
+            </div>
+            <button>Play!</button>
+        </div>
+        <script src="../../js/part1/paper.js"></script>
+    </main>
 </body>
 
 </html>

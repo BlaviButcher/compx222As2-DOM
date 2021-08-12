@@ -36,8 +36,8 @@ function drawSquares(userInput, container) {
  */
 function colorSquare(square, turn) {
     if (turn == 1)
-        square.style.backgroundColor = 'blue';
-    else square.style.backgroundColor = 'red';
+        square.style.backgroundColor = '#83B5D1';
+    else square.style.backgroundColor = '#FF6B6B';
 }
 
 /**
@@ -111,7 +111,7 @@ function gameOver(turn) {
 function playGame() {
 
     //DEBUG
-    let userInput = "6";
+    let userInput = "4";
 
 
     let turnInfo = {
