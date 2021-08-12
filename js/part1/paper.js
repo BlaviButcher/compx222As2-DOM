@@ -5,12 +5,15 @@
  */
 function checkInputErrors(input) {
     if (isNaN(input))
-        alert("Please enter a number!");
+        feedbackContainer.innerText = "Please enter a number!";
 
     // If a game is less than 4 squares there it is entirely unfair, there is no chance
     // that the second player can win
     else if (input < 4)
-        alert("Must have atleast 4 squares for game to be somewhat fair!");
+        feedbackContainer.innerText = "4 squares are needed for a fair game!";
+
+    else if (input > 50)
+        feedbackContainer.innerText = "Anymore than 50 is squares out of hand!"
 
     else return true;
     return false;
@@ -22,6 +25,8 @@ function checkInputErrors(input) {
  * @param {HTMLElement} container box squares will be drawn in
  */
 function drawSquares(userInput, container) {
+    // destroy all children of paper-container
+    paperContainer.innerHTML = "";
     for (let i = 0; i < userInput; i++) {
         let square = document.createElement('div');
         square.className = 'square';
@@ -47,6 +52,7 @@ function changeTurns(turnInfo) {
     // Inverse current players turn
     turnInfo.playersTurn = turnInfo.playersTurn == 1 ? 2 : 1;
     turnInfo.selection = 1;
+    updateFeedbackContainer(turnInfo);
 }
 
 /**
@@ -101,13 +107,12 @@ function checkReachability(squares) {
  * @param {boolean} turn true for player 1 false for 2
  */
 function gameOver(turn) {
-    alert(`Player ${turn} wins`);
     buttonPlay.innerText = "Play!";
+    feedbackContainer.innerText = `Player ${turn} wins! Play again?`;
 }
 
 
 function playGame(userInput) {
-
     let turnInfo = {
         firstSelectionIndex: -1,
         selection: 1,
@@ -116,7 +121,7 @@ function playGame(userInput) {
 
     // error handling for userInput
     if (!checkInputErrors(userInput)) {
-        return;
+        return true;
     }
     userInput = parseInt(userInput);
 
@@ -128,6 +133,7 @@ function playGame(userInput) {
     let squares = document.getElementsByClassName("square");
     storeAdjacentSquares(squares);
 
+    feedbackContainer.innerText = "Player 1, choose your first square";
     // using a for loop rather than a foreach as we need an index, becausewant to be able to store the placement 
     // of square
     for (let i = 0; i < squares.length; i++) {
@@ -137,12 +143,12 @@ function playGame(userInput) {
         // store placement in strip
         square.index = i;
         square.addEventListener("click", () => {
+
             if (square.reachable == true) {
 
                 // if players second pick and chosen square is not adjacent
                 if (turnInfo.selection == 2 && !isAdjacent(square, turnInfo.firstSelectionIndex)) {
-                    alert("Your second choice must be adjacent to the" +
-                        " first");
+                    feedbackContainer.innerText = "Your second choice must be adjacent to the first!"
                     return;
                 }
 
@@ -151,15 +157,27 @@ function playGame(userInput) {
 
                 // if second selection of players turn
                 if (turnInfo.selection == 2) {
-                    if (checkReachability(squares)) gameOver(turnInfo.playersTurn);
+                    if (checkReachability(squares)) {
+                        gameOver(turnInfo.playersTurn);
+                        return;
+                    }
+
                     changeTurns(turnInfo);
+
                     return;
                 }
                 turnInfo.firstSelectionIndex = square.index;
                 turnInfo.selection++;
+                updateFeedbackContainer(turnInfo);
             }
         })
     }
+}
+
+
+function updateFeedbackContainer(turnInfo) {
+    let selection = turnInfo.selection == 1 ? "first" : "second";
+    feedbackContainer.innerText = `Player ${turnInfo.playersTurn}, choose your ${selection} square`;
 }
 
 // document.getElementById("button-clear").addEventListener("click", () => {
@@ -174,6 +192,7 @@ function playGame(userInput) {
 
 let buttonPlay = document.getElementById("button-play");
 let paperContainer = document.getElementById("paper-container");
+let feedbackContainer = document.getElementById("feedback-container");
 // Draw 4 squares as placeholder
 drawSquares(4, paperContainer);
 
@@ -181,10 +200,12 @@ drawSquares(4, paperContainer);
 
 
 buttonPlay.addEventListener("click", element => {
-    // destroy all children of paper-container
-    paperContainer.innerHTML = "";
+
     buttonPlay.innerText = "Reset";
-    playGame(document.getElementById("box-count").value);
+    // if returns an error
+    if (playGame(document.getElementById("box-count").value)) {
+        drawSquares(4, paperContainer);
+    }
 });
 
 // TODO: Call function after playgame for clean up -- use true false return
