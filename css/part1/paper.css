@@ -10,7 +10,7 @@ body {
     height: 100vh;
     margin: 0;
     background: linear-gradient(37deg, #83b5d1a6, #D6CA98, #ff6b6b9c);
-    background-size: 200% 200%;
+    background-size: 100% 100%;
 
     animation: background-grad 20s ease infinite;
 }
@@ -46,7 +46,7 @@ h1 {
 .square {
     border: 3px solid black;
     width: 100%;
-    background-color: white;
+    background-color: #65617638;
 }
 
 /* makes div behave like a square */
@@ -107,10 +107,18 @@ h1 {
     border-radius: 25px;
 }
 
+#button-wrap {
+    /* border: 1px solid black; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 button {
     font-size: 2.5rem;
     width: 15%;
     border-radius: 25px;
+    margin: 0 2% 0 2%;
 }
 
 
