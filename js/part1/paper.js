@@ -19,23 +19,22 @@ function checkInputErrors(input) {
 /**
  * Draws number of squares requested by user
  * @param {int} userInput 
- * @param {HTMLElement} container box squares will be drawn in
  */
-function drawSquares(userInput, container) {
+function drawSquares(userInput) {
     for (let i = 0; i < userInput; i++) {
         let square = document.createElement('div');
         square.className = 'square';
-        container.appendChild(square);
+        gameContainer.appendChild(square);
     }
 }
 
 /**
  * alternate colors depending on player turn
  * @param {Element} square 
- * @param {int} turn players turn (1 or 2)
+ * @param {boolean} turn true for player 1 false for player 2
  */
 function colorSquare(square, turn) {
-    if (turn == 1)
+    if (isPlayer1Turn === true)
         square.style.backgroundColor = 'blue';
     else square.style.backgroundColor = 'red';
 }
@@ -43,10 +42,9 @@ function colorSquare(square, turn) {
 /**
  * changes current players turn and resets selection to first
  */
-function changeTurns(turnInfo) {
-    // Inverse current players turn
-    turnInfo.playersTurn = turnInfo.playersTurn == 1 ? 2 : 1;
-    turnInfo.selection = 1;
+function changeTurns() {
+    isPlayer1Turn = !isPlayer1Turn;
+    selectionInfo.selection = 1;
 }
 
 /**
@@ -101,74 +99,73 @@ function checkReachability(squares) {
  * @param {boolean} turn true for player 1 false for 2
  */
 function gameOver(turn) {
-    alert(`Player ${turn} wins`);
+    let player = turn ? "Player 1" : "Player 2";
+    alert(`${player} wins`);
 }
 
 
 
 
 
-function playGame() {
 
-    //DEBUG
-    let userInput = "6";
+//DEBUG
+let userInput = "6";
 
 
-    let turnInfo = {
-        firstSelectionIndex: -1,
-        selection: 1,
-        playersTurn: 1
+let isPlayer1Turn = true;
+let selectionInfo = {
+    firstSelectionIndex: -1,
+    selection: 1
+}
+
+// error handling for userInput
+while (true) {
+    // userInput = prompt("Please enter a number");
+    if (checkInputErrors(userInput)) {
+        userInput = parseInt(userInput);
+        break;
     }
+}
 
-    // error handling for userInput
-    while (true) {
-        // userInput = prompt("Please enter a number");
-        if (checkInputErrors(userInput)) {
-            userInput = parseInt(userInput);
-            break;
-        }
-    }
+// Get container that will hold squares
+let gameContainer = document.getElementById("paper-container");
+drawSquares(userInput);
 
-    // Get container that will hold squares
-    let gameContainer = document.getElementById("paper-container");
-    drawSquares(userInput, gameContainer);
+// get squares
+let squares = document.getElementsByClassName("square");
+storeAdjacentSquares(squares);
 
-    // get squares
-    let squares = document.getElementsByClassName("square");
-    storeAdjacentSquares(squares);
+// using a for loop rather than a foreach as we need an index, becausewant to be able to store the placement 
+// of square
+for (let i = 0; i < squares.length; i++) {
+    let square = squares[i];
+    // becomes false if has no adjacent reachable siblings or is already colored 
+    square.reachable = true;
+    // store placement in strip
+    square.index = i;
+    square.addEventListener("click", () => {
+        if (square.reachable == true) {
 
-    // using a for loop rather than a foreach as we need an index, becausewant to be able to store the placement 
-    // of square
-    for (let i = 0; i < squares.length; i++) {
-        let square = squares[i];
-        // becomes false if has no adjacent reachable siblings or is already colored 
-        square.reachable = true;
-        // store placement in strip
-        square.index = i;
-        square.addEventListener("click", () => {
-            if (square.reachable == true) {
-
-                // if players second pick and chosen square is not adjacent
-                if (turnInfo.selection == 2 && !isAdjacent(square, turnInfo.firstSelectionIndex)) {
-                    alert("Your second choice must be adjacent to the" +
-                        " first");
-                    return;
-                }
-
-                colorSquare(square, turnInfo.playersTurn);
-                square.reachable = false;
-
-                // if second selection of players turn
-                if (turnInfo.selection == 2) {
-                    if (checkReachability(squares)) gameOver(turnInfo.playersTurn);
-                    changeTurns(turnInfo);
-                    return;
-                }
-                turnInfo.firstSelectionIndex = square.index;
-                turnInfo.selection++;
+            // if players second pick and chosen square is not adjacent
+            if (selectionInfo.selection == 2 && !isAdjacent(square, selectionInfo.firstSelectionIndex)) {
+                alert("Your second choice must be adjacent to the" +
+                    " first");
+                return;
             }
-        })
-    }
+
+            colorSquare(square, isPlayer1Turn);
+            square.reachable = false;
+
+            // if second selection of players turn
+            if (selectionInfo.selection == 2) {
+                if (checkReachability(squares)) gameOver(isPlayer1Turn);
+                changeTurns();
+                return;
+            }
+            selectionInfo.firstSelectionIndex = square.index;
+            selectionInfo.selection++;
+        }
+    })
 }
 
-playGame();
+
