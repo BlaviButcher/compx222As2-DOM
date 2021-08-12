@@ -1,14 +1,42 @@
 body {
     height: 100vh;
+    display: flex;
+    margin: 0;
 }
 
-#image-wrap {
-    width: 35%;
+#main-wrap {
+    /* center vertically and horizontally */
+    margin: 0;
+    width: 50%;
     margin: auto;
-    align-self: center;
+    border: 1px solid black;
+    height: 90%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: auto;
+    height: 100%;
+}
+
+#question {
+    font-size: 2rem;
+    padding: 10px 0 10px 0;
+    text-align: center;
 }
 
 img {
     width: 100%;
     height: auto;
+    border-radius: 50px;
+}
+
+#answer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid black;
+    flex: 1;
 }
