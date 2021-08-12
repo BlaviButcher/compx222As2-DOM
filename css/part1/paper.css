@@ -9,10 +9,10 @@
 body {
     height: 100vh;
     margin: 0;
-    background: linear-gradient(37deg, #83b5d1a6, #D6CA98, #ff6b6b9c);
-    background-size: 100% 100%;
+    background: linear-gradient(37deg, #83b5d1a6, #FFDDA1, #ff6b6b9c);
+    background-size: 300% 300%;
 
-    animation: background-grad 20s ease infinite;
+    animation: background-grad 60s ease infinite;
 }
 
 main {
