@@ -102,17 +102,11 @@ function checkReachability(squares) {
  */
 function gameOver(turn) {
     alert(`Player ${turn} wins`);
+    buttonPlay.innerText = "Play!";
 }
 
 
-
-
-
-function playGame() {
-
-    //DEBUG
-    let userInput = "4";
-
+function playGame(userInput) {
 
     let turnInfo = {
         firstSelectionIndex: -1,
@@ -121,13 +115,10 @@ function playGame() {
     }
 
     // error handling for userInput
-    while (true) {
-        // userInput = prompt("Please enter a number");
-        if (checkInputErrors(userInput)) {
-            userInput = parseInt(userInput);
-            break;
-        }
+    if (!checkInputErrors(userInput)) {
+        return;
     }
+    userInput = parseInt(userInput);
 
     // Get container that will hold squares
     let gameContainer = document.getElementById("paper-container");
@@ -171,4 +162,30 @@ function playGame() {
     }
 }
 
-playGame();
+// document.getElementById("button-clear").addEventListener("click", () => {
+//     let squares = document.getElementsByClassName("square");
+//     for (let square of squares) {
+//         square.style.backgroundColor = '#65617638';
+//     }
+// });
+
+
+// ********* MAIN **************
+
+let buttonPlay = document.getElementById("button-play");
+let paperContainer = document.getElementById("paper-container");
+// Draw 4 squares as placeholder
+drawSquares(4, paperContainer);
+
+
+
+
+buttonPlay.addEventListener("click", element => {
+    // destroy all children of paper-container
+    paperContainer.innerHTML = "";
+    buttonPlay.innerText = "Reset";
+    playGame(document.getElementById("box-count").value);
+});
+
+// TODO: Call function after playgame for clean up -- use true false return
+// to see if error occured (empty board somethimes)

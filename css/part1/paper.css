@@ -121,4 +121,10 @@ button {
     margin: 0 2% 0 2%;
 }
 
+/* Need a big js refactor before implementation
+    ie. initNewGame function */
+#button-clear {
+    display: none;
+}
+
 
