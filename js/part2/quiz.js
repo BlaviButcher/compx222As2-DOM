@@ -121,15 +121,73 @@ let questions = [
     }
 
 ];
-
+/*
+    <div id="main-wrap">
+        <main>
+            <div id="question-container">
+                <div id="question"></div>
+                <img src="" alt="">
+            </div>
+            <div id="answer-container">
+                <button class="answer"></button>
+                <button class="answer"></button>
+                <button class="answer"></button>
+                <button class="answer"></button>
+            </div>
+            <footer>
+                <button id="next-question">Next &#8594</button>
+            </footer>
+        </main>
+    </div>
+*/
 function buildMainScreen() {
     let body = document.getElementsByTagName("body")[0];
-    let main = document.createElement("main");
+    // clear body
+    body.innerHTML = "";
 
-    body.appendChild(main);
+    // create and assign id to main-wrap <div>
+    let mainWrap = document.createElement("div");
+    mainWrap.setAttribute("id", "main-wrap");
+    body.appendChild(mainWrap);
+
+    let main = document.createElement("main");
+    mainWrap.appendChild(main);
+
+    // build question container and contents
+    let questionContainer = document.createElement("div");
+    questionContainer.setAttribute("id", "question-container");
+
+    let question = document.createElement("div");
+    question.setAttribute("id", "question");
+
+    let img = document.createElement("img");
+
+    questionContainer.appendChild(question);
+    questionContainer.appendChild(img);
+    main.appendChild(questionContainer);
+
+    // build answer-container contents
+    let answerContainer = document.createElement("div");
+    answerContainer.setAttribute("id", "answer-container");
+
+    for (let i = 0; i < 4; i++) {
+        let button = document.createElement("button");
+        button.setAttribute("class", "answer");
+        answerContainer.appendChild(button);
+    }
+
+    main.appendChild(answerContainer);
+
+    // build footer
+    let footer = document.createElement("footer");
+    let button = document.createElement("button");
+    button.setAttribute("id", "next-question");
+    button.textContent = "Next \u2192";
+
+    footer.appendChild(button);
+    main.appendChild(footer);
 }
 
-document.getElementById("next-question").addEventListener("click", nextQuestion);
 
 
 function nextQuestion() {
@@ -142,7 +200,7 @@ function nextQuestion() {
  * @param {int} questionNumber current question
  */
 function displayQuestion(questionNumber) {
-    if (questionNumber == 2) {
+    if (questionNumber == 10) {
         quizDone();
         document.getElementById("next-question").removeEventListener("click", nextQuestion);
         return;
@@ -178,9 +236,6 @@ function quizDone() {
         body.appendChild(givenAnswer);
         body.appendChild(correctAnswer);
     }
-
-
-
 }
 
 /**
@@ -225,6 +280,11 @@ function removeButtonListeners() {
     }
 }
 
+// **********  MAIN ************
+
+
+
+buildMainScreen();
 
 let questionNumber = 1;
 let image = document.getElementsByTagName("img")[0];
@@ -233,4 +293,5 @@ let question = document.getElementById("question");
 let incorrectAnswers = [];
 let correctAnswers = 0;
 
+document.getElementById("next-question").addEventListener("click", nextQuestion);
 displayQuestion(questionNumber);

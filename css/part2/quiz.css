@@ -11,6 +11,7 @@ body {
     margin: auto;
     border: 1px solid black;
     height: 90%;
+
 }
 
 main {
@@ -19,8 +20,6 @@ main {
     width: 85%;
     margin: auto;
     height: 100%;
-
-    border: 1px solid black;
 }
 
 #question {
@@ -39,6 +38,5 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    border: 1px solid black;
     flex: 1;
 }
