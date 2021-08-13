@@ -122,7 +122,12 @@ let questions = [
 
 ];
 
+function buildMainScreen() {
+    let body = document.getElementsByTagName("body")[0];
+    let main = document.createElement("main");
 
+    body.appendChild(main);
+}
 
 document.getElementById("next-question").addEventListener("click", nextQuestion);
 

@@ -19,6 +19,8 @@ main {
     width: 85%;
     margin: auto;
     height: 100%;
+
+    border: 1px solid black;
 }
 
 #question {
