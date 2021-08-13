@@ -145,7 +145,7 @@ function displayQuestion(questionNumber) {
         buttons[i].index = i;
 
         // if i is the same index as the answer
-        if (i == questions[questionNumber - 1].options.answer - 1) {
+        if (i == questions[questionNumber - 1].answer - 1) {
             buttons[i].addEventListener("click", correctAnswer);
         } else buttons[i].addEventListener("click", incorrectAnswer);
     }
@@ -171,15 +171,17 @@ function incorrectAnswer(button) {
         // get correct answer
         correctAnswer: questions[questionNumber - 1].options[answer - 1]
     });
+    button.target.style.color = 'red';
     removeButtonListeners();
-    console.log("clicl");
+
 }
 
 /**
  * Correct answer handler
  */
-function correctAnswer() {
+function correctAnswer(button) {
     correctAnswers++;
+    button.target.style.color = 'green';
     removeButtonListeners();
 }
 
@@ -190,7 +192,8 @@ function correctAnswer() {
 function removeButtonListeners() {
     let buttons = document.getElementsByClassName("answer");
     for (let button of buttons) {
-        button.removeAttribute("click");
+        button.removeEventListener("click", correctAnswer);
+        button.removeEventListener("click", incorrectAnswer);
     }
 }
 
