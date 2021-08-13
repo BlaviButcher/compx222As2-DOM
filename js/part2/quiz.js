@@ -137,20 +137,69 @@ function displayQuestion(questionNumber) {
     if (questionNumber == 10) quizDone();
     // set image for current question
     image.src = questions[questionNumber - 1].image;
-
+    question.textContent = questions[questionNumber - 1].question;
     // Fill buttons with options from current question
-    for (let i = 0; i < buttons.length; i++)
+    for (let i = 0; i < buttons.length; i++) {
+        // update button
         buttons[i].textContent = questions[questionNumber - 1].options[i];
+        buttons[i].index = i;
+
+        // if i is the same index as the answer
+        if (i == questions[questionNumber - 1].options.answer - 1) {
+            buttons[i].addEventListener("click", correctAnswer);
+        } else buttons[i].addEventListener("click", incorrectAnswer);
+    }
+
+
 }
 
 function quizDone() {
     document.getElementsByTagName("body")[0].innerHTML = "";
 }
 
+/**
+ * Incorrect answer handler
+ * @param {Element} button event caller 
+ */
+function incorrectAnswer(button) {
+    // get correct answer index
+    let answer = questions[questionNumber - 1].answer;
+    // add given answer and correct answer to array
+    incorrectAnswers.push({
+        // get contents of given answer
+        givenAnswer: questions[questionNumber - 1].options[button.target.index],
+        // get correct answer
+        correctAnswer: questions[questionNumber - 1].options[answer - 1]
+    });
+    removeButtonListeners();
+    console.log("clicl");
+}
+
+/**
+ * Correct answer handler
+ */
+function correctAnswer() {
+    correctAnswers++;
+    removeButtonListeners();
+}
+
+
+/**
+ * Drops the click event on all buttons
+ */
+function removeButtonListeners() {
+    let buttons = document.getElementsByClassName("answer");
+    for (let button of buttons) {
+        button.removeAttribute("click");
+    }
+}
 
 
 let questionNumber = 1;
 let image = document.getElementsByTagName("img")[0];
 let buttons = document.getElementsByClassName("answer");
+let question = document.getElementById("question");
+let incorrectAnswers = [];
+let correctAnswers = 0;
 
 displayQuestion(questionNumber);
