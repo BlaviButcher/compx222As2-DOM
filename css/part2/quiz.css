@@ -40,3 +40,7 @@ img {
     justify-content: space-around;
     flex: 1;
 }
+
+button {
+    font-size: 1.5rem;
+}

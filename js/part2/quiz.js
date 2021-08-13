@@ -200,7 +200,7 @@ function nextQuestion() {
  * @param {int} questionNumber current question
  */
 function displayQuestion(questionNumber) {
-    if (questionNumber == 10) {
+    if (questionNumber == 11) {
         quizDone();
         document.getElementById("next-question").removeEventListener("click", nextQuestion);
         return;
@@ -226,6 +226,7 @@ function displayQuestion(questionNumber) {
 
 function quizDone() {
     let body = document.getElementsByTagName("body")[0];
+    body.innerHTML = "";
     for (let answer of incorrectAnswers) {
         let givenAnswer = document.createElement("p");
         givenAnswer.textContent = `Your answer was: ${answer.givenAnswer}`;
