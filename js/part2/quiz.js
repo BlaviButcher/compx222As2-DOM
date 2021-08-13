@@ -124,9 +124,12 @@ let questions = [
 
 
 
-document.getElementById("next-question").addEventListener("click", () => {
+document.getElementById("next-question").addEventListener("click", nextQuestion);
+
+
+function nextQuestion() {
     displayQuestion(++questionNumber);
-});
+}
 
 
 /**
@@ -134,7 +137,11 @@ document.getElementById("next-question").addEventListener("click", () => {
  * @param {int} questionNumber current question
  */
 function displayQuestion(questionNumber) {
-    if (questionNumber == 10) quizDone();
+    if (questionNumber == 2) {
+        quizDone();
+        document.getElementById("next-question").removeEventListener("click", nextQuestion);
+        return;
+    }
     // set image for current question
     image.src = questions[questionNumber - 1].image;
     question.textContent = questions[questionNumber - 1].question;
@@ -143,6 +150,7 @@ function displayQuestion(questionNumber) {
         // update button
         buttons[i].textContent = questions[questionNumber - 1].options[i];
         buttons[i].index = i;
+        buttons[i].style.color = 'black';
 
         // if i is the same index as the answer
         if (i == questions[questionNumber - 1].answer - 1) {
@@ -154,7 +162,20 @@ function displayQuestion(questionNumber) {
 }
 
 function quizDone() {
-    document.getElementsByTagName("body")[0].innerHTML = "";
+    let body = document.getElementsByTagName("body")[0];
+    for (let answer of incorrectAnswers) {
+        let givenAnswer = document.createElement("p");
+        givenAnswer.textContent = `Your answer was: ${answer.givenAnswer}`;
+
+        let correctAnswer = document.createElement("p");
+        correctAnswer.textContent = `Correct answer: ${answer.correctAnswer}`;
+
+        body.appendChild(givenAnswer);
+        body.appendChild(correctAnswer);
+    }
+
+
+
 }
 
 /**
@@ -171,6 +192,8 @@ function incorrectAnswer(button) {
         // get correct answer
         correctAnswer: questions[questionNumber - 1].options[answer - 1]
     });
+    console.log(questions[questionNumber - 1].options[button.target.index]);
+    console.log(questions[questionNumber - 1].options[answer - 1]);
     button.target.style.color = 'red';
     removeButtonListeners();
 
