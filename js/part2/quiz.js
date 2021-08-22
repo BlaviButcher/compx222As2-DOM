@@ -1,3 +1,7 @@
+// TODO: Move questions to independent file
+// remember to set script type='module'
+
+// array of questions to be asked
 let questions = [
     {
         question: "Who can require you to undergo a breath screening test?",
@@ -119,7 +123,6 @@ let questions = [
         ],
         answer: "4"
     }
-
 ];
 /*
     <div id="main-wrap">
@@ -144,6 +147,7 @@ let questions = [
 // I built this purely for the sake of getting a better grasp of DOM api.
 // I learned about JSX which was cool, but can't assume marker is using Babel
 
+// TODO: buildMainScreen removal?
 function buildMainScreen() {
     let body = document.getElementsByTagName("body")[0];
     // clear body
@@ -193,6 +197,9 @@ function buildMainScreen() {
     main.appendChild(footer);
 }
 
+/**
+ * Modifies html to handle answer display
+ */
 function buildAnswerPage() {
     // remove content of answer container
     let answerCont = document.getElementById("answer-container");
@@ -214,19 +221,27 @@ function buildAnswerPage() {
 }
 
 
+/**
+ * Itterate question and repeat call
+ */
 function nextQuestion() {
     questionNumber++;
     displayQuestion();
 }
 
 
+// TODO: Create condition for having all correct answers
+// TODO: Create heading for answers
+// container.insertBefore(newFreeformLabel, container.firstChild);
+
 /**
- * 
+ *  displays the current question and answer buttons or answers
+ *  depending on which stage program is at ie. (isAnswerSheet)
  * @param {int} questionNumber current question
  */
 function displayQuestion() {
 
-    if (questionNumber > QUESTION_AMOUNT) {
+    if (questionNumber > NUMBER_OF_QUESTIONS) {
 
         // if answers are done return
         if (isAnswerSheet) {
@@ -245,9 +260,7 @@ function displayQuestion() {
     // given the current question
     let index = questionNumber - 1;
 
-
-
-    // If answers logic - display user answer and correct answer
+    // if onto answers - display user answer and correct answer
     if (isAnswerSheet) {
         console.log(questionNumber);
         console.log(userAnswers[index]);
@@ -255,9 +268,8 @@ function displayQuestion() {
         console.log(userAnswers[index].yourAnswer);
         console.log(userAnswers[index].correctAnswer);
 
-        // if is correct answer
+        // if is correct answer - skip
         if (userAnswers[index].givenAnswer == userAnswers[index].correctAnswer) {
-            console.log("same answers");
             questionNumber++;
             displayQuestion();
             return;
@@ -288,12 +300,10 @@ function displayQuestion() {
     image.src = questions[index].image;
     // set question text
     question.textContent = questions[index].question;
-
-
 }
 
 /**
- * Incorrect answer handler
+ * logic for incorrect answer selected
  * @param {Element} button event caller 
  */
 function incorrectAnswer(button) {
@@ -308,7 +318,7 @@ function incorrectAnswer(button) {
 }
 
 /**
- * 
+ * logic for correct answer selected
  * @param {Element} button 
  */
 function correctAnswer(button) {
@@ -318,7 +328,10 @@ function correctAnswer(button) {
     removeButtonListeners();
 }
 
-// save user anser to array
+/**
+ * stores users answers in array
+ * @param {Element} button event caller 
+ */
 function storeUserAnswer(button) {
 
     // get correct answer index
@@ -348,20 +361,30 @@ function removeButtonListeners() {
 
 // buildMainScreen();
 
+// corresponds to current question being viewed
 let questionNumber = 1;
+// image element
 const image = document.getElementsByTagName("img")[0];
+// array of answer buttons
 const buttons = document.getElementsByClassName("answer");
+// question text
 let question = document.getElementById("question");
+// array of answers user selects
 const userAnswers = [];
+// number of correct answers
 let correctAnswers = 0;
-// denotes whether we are going through answer logic
+// denotes whether we are going through answer logic 
+// first questions display for QUESTION_AMOUNT then
+// answers displayed for all incorrect answers
 let isAnswerSheet = false;
+// is the quiz over - have we went through questions
+// and answers
 let isQuizDone = false;
-const QUESTION_AMOUNT = 3;
+const NUMBER_OF_QUESTIONS = 3;
 
+// add eventListener for next button - nextQuestion
 document.getElementById("next-question").addEventListener("click", nextQuestion);
 
-
-
-displayQuestion(questionNumber);
+// display first question
+displayQuestion();
 
