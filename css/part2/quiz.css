@@ -6,8 +6,6 @@ body {
     font-family: 'Noto Sans', sans-serif;
     background: url('../../assets/part2/img/road.jpg')
     no-repeat center center fixed;
-
-
 }
 
 #main-wrap {
@@ -27,7 +25,7 @@ body {
     right: 0;
     bottom: 0;
     background: #A8E0FF44; 
-    z-index: 1; /* Specify a stack order in case you're using a different order for other elements */
+    z-index: 0; /* Specify a stack order so it sits behind*/
 
     /* center content hori and vert */
     display: flex;
@@ -72,14 +70,67 @@ img {
 }
 
 #answer-container {
+    min-height: 200px;
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     flex: 0.9 1 auto;
+    
 
 }
+
+#correct-answer-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    flex: 2;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #EFEFEF;
+}
+
+#bottom-answer-wrap {
+    width: 80%;
+    display: flex;
+    flex: 5 0 auto;
+}
+
+#your-answer, #correct-answer {
+
+    display: flex;
+    flex-direction: column;
+    background-color: #EFEFEF;
+    border-radius: 10px;
+    /* grow to fit area */
+    flex: 1;
+}
+
+#your-answer {
+    margin-right: 5%;
+}
+
+#correct-answer {
+    margin-left: 5%;
+}
+
+.answer-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 2 0 auto;
+}
+
+.answer-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 5 0 auto;
+}
+
+
 
 button {
     font-size: 1.5rem;

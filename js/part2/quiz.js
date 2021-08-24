@@ -1,5 +1,6 @@
 // TODO: Move questions to independent file
 // remember to set script type='module'
+// TODO: Add reset button at the end
 
 // array of questions to be asked
 let questions = [
@@ -205,6 +206,18 @@ function buildAnswerPage() {
     let answerCont = document.getElementById("answer-container");
     answerCont.innerHTML = "";
 
+    let correctAnswerCount = document.createElement("div");
+    correctAnswerCount.setAttribute("id", "correct-answer-count");
+    correctAnswerCount.textContent = `You answered ${correctAnswers} out of ${NUMBER_OF_QUESTIONS}
+    question correct!`
+    answerCont.appendChild(correctAnswerCount);
+
+    // bottom container that will hold yourAnswer and correctAnswer
+    let bottomAnswer = document.createElement("div");
+    bottomAnswer.setAttribute("id", "bottom-answer-wrap");
+    answerCont.appendChild(bottomAnswer);
+
+
     let yourAnswer = document.createElement("div");
     yourAnswer.setAttribute("class", "answer-page-io");
 
@@ -212,11 +225,37 @@ function buildAnswerPage() {
     let correctAnswer = document.createElement("div");
     correctAnswer.setAttribute("class", "answer-page-io");
 
+
     yourAnswer.setAttribute("id", "your-answer");
-    answerCont.appendChild(yourAnswer);
+    bottomAnswer.appendChild(yourAnswer);
 
     correctAnswer.setAttribute("id", "correct-answer");
-    answerCont.appendChild(correctAnswer);
+    bottomAnswer.appendChild(correctAnswer);
+
+    // Containers within correctAnswer and yourAnswer to hold cotent
+    let correctAnswerTitle = document.createElement("div");
+    correctAnswerTitle.setAttribute("id", "correct-answer-title");
+    correctAnswerTitle.setAttribute("class", "answer-title");
+    correctAnswerTitle.textContent = "Correct Answer";
+    correctAnswer.appendChild(correctAnswerTitle);
+
+    let correctAnswerBody = document.createElement("div");
+    correctAnswerBody.setAttribute("id", "correct-answer-body");
+    correctAnswerBody.setAttribute("class", "answer-body");
+    correctAnswer.appendChild(correctAnswerBody);
+
+    let yourAnswerTitle = document.createElement("div");
+    yourAnswerTitle.setAttribute("id", "your-answer-title");
+    yourAnswerTitle.setAttribute("class", "answer-title");
+    yourAnswerTitle.textContent = "Your answer";
+    yourAnswer.appendChild(yourAnswerTitle);
+
+    let yourAnswerBody = document.createElement("div");
+    yourAnswerBody.setAttribute("id", "your-answer-body");
+    yourAnswerBody.setAttribute("class", "answer-body");
+
+    yourAnswer.appendChild(yourAnswerBody);
+
 
 }
 
@@ -274,11 +313,12 @@ function displayQuestion() {
             displayQuestion();
             return;
         }
-        let yourAnswer = document.getElementById("your-answer");
-        let correctAnswer = document.getElementById("correct-answer");
+        let yourAnswerBody = document.getElementById("your-answer-body");
+        let correctAnswerBody = document.getElementById("correct-answer-body")
 
-        yourAnswer.textContent = userAnswers[questionNumber - 1].givenAnswer;
-        correctAnswer.textContent = userAnswers[questionNumber - 1].correctAnswer;
+
+        yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
+        correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
 
         // normal question logic
     } else {
@@ -380,7 +420,7 @@ let isAnswerSheet = false;
 // is the quiz over - have we went through questions
 // and answers
 let isQuizDone = false;
-const NUMBER_OF_QUESTIONS = 3;
+const NUMBER_OF_QUESTIONS = 10;
 
 // add eventListener for next button - nextQuestion
 document.getElementById("next-question").addEventListener("click", nextQuestion);
