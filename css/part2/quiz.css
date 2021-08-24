@@ -1,46 +1,118 @@
 body {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     margin: 0;
+    font-family: 'Noto Sans', sans-serif;
+    background: url('../../assets/part2/img/road.jpg')
+    no-repeat center center fixed;
+
+
 }
 
 #main-wrap {
     /* center vertically and horizontally */
-    margin: 0;
     width: 50%;
-    margin: auto;
-    border: 1px solid black;
-    height: 90%;
-
+    /* border: 1px solid black; */
+    border-radius: 20px;
+    background: rgba(234, 245, 255, 0.3);
 }
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #A8E0FF44; 
+    z-index: 1; /* Specify a stack order in case you're using a different order for other elements */
+
+    /* center content hori and vert */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 main {
     display: flex;
     flex-direction: column;
-    width: 85%;
-    margin: auto;
+    width: 100%;
     height: 100%;
+    align-items: center;
+    
+}
+
+#question {
+    margin: 0 6.5% 0 6.5%;
+    line-height: 2.2rem;
+}
+
+#question-container {
+/* Center title and image */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 auto;
 }
 
 #question {
     font-size: 2rem;
-    padding: 10px 0 10px 0;
+    padding: 0 50px 0 50px;
+    margin: 30px 0 30px 0;
     text-align: center;
 }
 
 img {
-    width: 100%;
+    width: 70%;
     height: auto;
-    border-radius: 50px;
+    border-radius: 10px;
+    border: 2px solid black;
 }
 
 #answer-container {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    flex: 1;
+    align-items: center;
+    width: 100%;
+    flex: 0.9 1 auto;
+
 }
 
 button {
     font-size: 1.5rem;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: none;
+    border: none;
+    margin-top: 0.6rem;
+    padding: 7px;
+}
+
+button:hover {
+    background-color: #CCC;
+    cursor: pointer;
+}
+
+footer {
+    display: flex;
+    width: 80%;
+    justify-content: flex-end;
+    flex: 0.2;
+    height: 5%;
+    margin-bottom: 2rem;
+
+}
+
+
+
+#next-question {
+    height: 100%;
+    width: 10%;
+}
+
+#next-question:hover {
+    color:white;
 }

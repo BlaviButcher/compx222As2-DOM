@@ -13,6 +13,8 @@ body {
     background-size: 300% 300%;
 
     animation: background-grad 60s ease infinite;
+
+    font-family: 'Noto Sans', sans-serif;
 }
 
 main {
