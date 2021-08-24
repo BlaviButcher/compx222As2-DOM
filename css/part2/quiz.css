@@ -90,6 +90,7 @@ img {
     margin-bottom: 20px;
     border-radius: 10px;
     background-color: #EFEFEF;
+    font-size: 1.4rem;
 }
 
 #bottom-answer-wrap {
@@ -98,7 +99,7 @@ img {
     flex: 5 0 auto;
 }
 
-#your-answer, #correct-answer {
+.answer-page-io {
 
     display: flex;
     flex-direction: column;
@@ -115,12 +116,22 @@ img {
 #correct-answer {
     margin-left: 5%;
 }
+#your-answer-title {
+    color: #B80C09;
+    font-weight: bold;
+}
+
+#correct-answer-title {
+    font-weight: bold;
+    color: #8FB339;
+}
 
 .answer-title {
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 2 0 auto;
+    font-size: 1.2rem;
 }
 
 .answer-body {

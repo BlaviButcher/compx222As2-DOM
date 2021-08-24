@@ -1,6 +1,7 @@
 // TODO: Move questions to independent file
 // remember to set script type='module'
 // TODO: Add reset button at the end
+// TODO: Stop user from moving without answering question
 
 // array of questions to be asked
 let questions = [
@@ -209,7 +210,7 @@ function buildAnswerPage() {
     let correctAnswerCount = document.createElement("div");
     correctAnswerCount.setAttribute("id", "correct-answer-count");
     correctAnswerCount.textContent = `You answered ${correctAnswers} out of ${NUMBER_OF_QUESTIONS}
-    question correct!`
+    questions correct!`
     answerCont.appendChild(correctAnswerCount);
 
     // bottom container that will hold yourAnswer and correctAnswer
@@ -351,7 +352,9 @@ function incorrectAnswer(button) {
     // add given answer and correct answer to array
     storeUserAnswer(button);
     // make selected button red
-    button.target.style.color = 'red';
+    button.target.style.color = '#B80C09';
+    button.target.style.fontWeight = "500";
+
     // get rid of click events (all events - only has click)
     removeButtonListeners();
 
@@ -364,7 +367,8 @@ function incorrectAnswer(button) {
 function correctAnswer(button) {
     correctAnswers++;
     storeUserAnswer(button);
-    button.target.style.color = 'green';
+    button.target.style.color = '#8FB339';
+    button.target.style.fontWeight = "500";
     removeButtonListeners();
 }
 
@@ -420,7 +424,7 @@ let isAnswerSheet = false;
 // is the quiz over - have we went through questions
 // and answers
 let isQuizDone = false;
-const NUMBER_OF_QUESTIONS = 10;
+const NUMBER_OF_QUESTIONS = 1;
 
 // add eventListener for next button - nextQuestion
 document.getElementById("next-question").addEventListener("click", nextQuestion);
