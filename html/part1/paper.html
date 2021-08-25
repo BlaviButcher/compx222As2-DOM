@@ -5,27 +5,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=sc, initial-scale=1.0">
+    <!-- font-family: 'Noto Sans', sans-serif;-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../../css/part1/paper.css">
     <title>Paper Strip Game</title>
 </head>
 
 <body>
     <main>
+        <!-- Top section of page -->
         <div id="top-page">
             <h1>The Paper Strip Game</h1>
+            <!-- Wrapper container to stop growth/shrink so title and inputs stay fixed -->
             <div id="game-graphics-container">
-                <div id="paper-container">
-
-                </div>
+                <!-- Where the squares will be displayed - can grow and shrink -->
+                <div id="paper-container"></div>
             </div>
         </div>
+        <!-- holds all game config, play, user input etc -->
         <div class="game-config-container bottom-page">
             <div id="feedback-container">Enter a number and press play to start!</div>
+            <!-- wraps input for easier positioning -->
             <div id="input-wrap">
+                <!-- Input and label -->
                 <label for="box-count">Number of squares:</label>
                 <input type="text" id="box-count">
             </div>
+            <!-- Wrapper for easier positioning -->
             <div id="button-wrap">
+                <!-- TODO: Implement clear button -->
                 <button id="button-clear">Clear</button>
                 <button id="button-play">Play!</button>
             </div>

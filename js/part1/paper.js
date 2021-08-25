@@ -99,7 +99,7 @@ function checkReachability(squares) {
         if (!isReachable) square.reachable = false;
         else isNoReachable = false;
     }
-    return isNoReachable
+    return isNoReachable;
 }
 
 /**
@@ -180,32 +180,24 @@ function updateFeedbackContainer(turnInfo) {
     feedbackContainer.innerText = `Player ${turnInfo.playersTurn}, choose your ${selection} square`;
 }
 
-// document.getElementById("button-clear").addEventListener("click", () => {
-//     let squares = document.getElementsByClassName("square");
-//     for (let square of squares) {
-//         square.style.backgroundColor = '#65617638';
-//     }
-// });
-
 
 // ********* MAIN **************
 
+// get html elements
+// play button
 let buttonPlay = document.getElementById("button-play");
+// container holding squares
 let paperContainer = document.getElementById("paper-container");
+// container that gives feedback to user
 let feedbackContainer = document.getElementById("feedback-container");
-// Draw 4 squares as placeholder
-drawSquares(4, paperContainer);
+drawSquares(0, paperContainer);
 
-
-
-
+// add click event
 buttonPlay.addEventListener("click", element => {
 
-    buttonPlay.innerText = "Reset";
     // if returns an error
-    if (playGame(document.getElementById("box-count").value)) {
-        drawSquares(4, paperContainer);
-    }
+    playGame(document.getElementById("box-count").value);
+
 });
 
 // TODO: Call function after playgame for clean up -- use true false return
