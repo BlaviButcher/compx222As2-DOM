@@ -424,7 +424,7 @@ let isAnswerSheet = false;
 // is the quiz over - have we went through questions
 // and answers
 let isQuizDone = false;
-const NUMBER_OF_QUESTIONS = 1;
+const NUMBER_OF_QUESTIONS = 5;
 
 // add eventListener for next button - nextQuestion
 document.getElementById("next-question").addEventListener("click", nextQuestion);

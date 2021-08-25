@@ -9,38 +9,43 @@ to see a better version use chrome */
 }
 
 body {
-    height: 100vh;
-    margin: 0;
-    background: linear-gradient(37deg, #83b5d1a6, #ff6b6b9c);
-    background-size: 200% 200%;
+    height: 100vh; /* Make fill screen */
+    margin: 0; /* remove browsers margin */
+    /* makes a linear gradient angled at 37deg from blue to red */
+    background: linear-gradient(37deg, #83b5d1a6, #ff6b6b9c); 
+    background-size: 200% 200%; /* zooms background in 200% */ 
 
+    /* does background-grad keyframes over 10s forever transition to each frame */
     animation: background-grad 10s ease infinite;
 
     font-family: 'Noto Sans', sans-serif;
+    color: #280004;
+
 }
 
+/* Main container stack everything inside upon eachother */
 main {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
+/* Give a weight (flex-grow) */
 #top-page {
     flex: 2.4;
 }
 
+/* center text, set font and padding */
 h1 {
     text-align: center;
     font-size: 3.5rem;
-    color: #280004;
     padding-top: 30px;
 }
-#game-graphics-container {
-    min-height: 50%;
-    /* border: 1px solid black; */
-    background-color: transparent;
-    padding: 20px;
 
+#game-graphics-container {
+    min-height: 50%; /* Stop shrink beyond 50% */
+    /* background-color: transparent; border: 1px solid black; */
+    padding: 20px;
     /* center strip */
     display: flex;
     flex-direction: column;
@@ -48,13 +53,14 @@ h1 {
 }
 
 #paper-container {
+    /* align as row */
     display: flex;
 }
 
 .square {
     border: 3px solid black;
-    width: 100%;
-    background-color: #65617638;
+    width: 100%; /* fill space */
+    background-color: #65617638; /* Semi transparent background */
 }
 
 /* makes div behave like a square */
