@@ -144,9 +144,8 @@ let questions = [
     </div>
 */
 
-// I built this purely for the sake of getting a better grasp of DOM api.
-
-// TODO: buildMainScreen removal?
+// modifies html for test page logic
+// All dom api is pretty self explantory
 function buildQuestionPage() {
     // build answer-container contents
     let answerContainer = document.getElementById("answer-container");
@@ -171,15 +170,14 @@ function buildQuestionPage() {
         <div id="correct-answer" class="answer-page-io">
             <div id="correct-answer-title" class="answer-title">Correct Answer</div>
             div id="correct-answer-body" class="answer-body"></div>
-
         </div>
     </div>
 </div>
-
 */
 /**
- * Modifies html to handle answer display
+ * modifies html for answer page logic
  */
+// All dom api is pretty self explantory
 function buildAnswerPage() {
     // remove content of answer container
     let answerCont = document.getElementById("answer-container");
@@ -217,11 +215,13 @@ function buildAnswerPage() {
     correctAnswerTitle.setAttribute("id", "correct-answer-title");
     correctAnswerTitle.setAttribute("class", "answer-title");
     correctAnswerTitle.textContent = "Correct Answer";
+    // append to correct answer card
     correctAnswer.appendChild(correctAnswerTitle);
 
     let correctAnswerBody = document.createElement("div");
     correctAnswerBody.setAttribute("id", "correct-answer-body");
     correctAnswerBody.setAttribute("class", "answer-body");
+    // append to correct answer card
     correctAnswer.appendChild(correctAnswerBody);
 
     let yourAnswerTitle = document.createElement("div");
@@ -234,14 +234,13 @@ function buildAnswerPage() {
     yourAnswerBody.setAttribute("id", "your-answer-body");
     yourAnswerBody.setAttribute("class", "answer-body");
 
+    // append to user answer card
     yourAnswer.appendChild(yourAnswerBody);
-
-
 }
 
 
 /**
- * Itterate question and repeat display new question
+ * Itterate question and display next question
  */
 function nextQuestion() {
     if (selectedAnswer) {
@@ -249,15 +248,16 @@ function nextQuestion() {
         displayQuestion();
     }
 }
-
+/**
+ * Itterate question and display next answer
+ */
 function nextAnswer() {
     questionNumber++;
     displayAnswer();
 }
 
 /**
- *  displays the current question and answer buttons or answers
- *  depending on which stage program is at ie. (isAnswerSheet)
+ *  displays the current question and answer buttons
  * 
  * @param {int} questionNumber current question
  */
@@ -265,22 +265,26 @@ function displayQuestion() {
 
     // When we are out of questions
     if (questionNumber > NUMBER_OF_QUESTIONS) {
-        // else move onto answer logic
+        // build answer page
         buildAnswerPage();
-        // reset question number
+        // shift back to question 1 (used to display answers)
         questionNumber = 1;
+        // drop current click event for next button
         let nextButton = document.getElementById("next-question");
         nextButton.removeEventListener("click", nextQuestion);
+        // add new click event
         nextButton.addEventListener("click", nextAnswer);
+        // display first incorrect answer
         displayAnswer();
         return;
     }
 
     // Fill buttons with options from current question
     for (let i = 0; i < buttons.length; i++) {
-        // update button
+        // update button for current question
         buttons[i].textContent = questions[questionNumber - 1].options[i];
         buttons[i].index = i;
+        // reset style to default
         buttons[i].style.color = 'black';
         buttons[i].style.fontWeight = "400";
 
@@ -290,13 +294,14 @@ function displayQuestion() {
         } else buttons[i].addEventListener("click", incorrectAnswer);
     }
 
-
     // set image for current question
     image.src = questions[questionNumber - 1].image;
     // set question text
     question.textContent = questions[questionNumber - 1].question;
 }
 /**
+ * Loops through all questions - only display incorrect answers
+ * long with question and correct answer
  * 
  * @returns {null}
  */
@@ -305,7 +310,7 @@ function displayAnswer() {
     let yourAnswerBody = document.getElementById("your-answer-body");
     let correctAnswerBody = document.getElementById("correct-answer-body")
 
-
+    // if perfect score - do something fun
     if (correctAnswers == NUMBER_OF_QUESTIONS) {
         image.src = "../../assets/part2/img/perfect-score.jpg";
         question.textContent = "You are a wizard!!!";
@@ -316,14 +321,13 @@ function displayAnswer() {
     }
     // if is correct answer - skip
     else if (userAnswers[questionNumber - 1].givenAnswer == userAnswers[questionNumber - 1].correctAnswer) {
-
         questionNumber++;
         displayAnswer();
         return;
     } else {
+        // increase # of incorrect answers displayed
         incorrectAnswerCounter++;
-
-
+        // display incorrect and correct answers
         yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
         correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
 
@@ -337,9 +341,14 @@ function displayAnswer() {
     }
 }
 
+/**
+ * prepare for reset
+ */
 function handleEndOfAnswers() {
+    // remove next button event handler
     let nextButton = document.getElementById("next-question");
     nextButton.removeEventListener("click", nextAnswer);
+    // add visual and event handler for reset
     nextButton.textContent = "↺";
     nextButton.addEventListener("click", reset);
 }
@@ -366,11 +375,16 @@ function incorrectAnswer(button) {
  * @param {Element} button 
  */
 function correctAnswer(button) {
+    // answer has been selected
     selectedAnswer = true;
+    // increase # of correct answers
     correctAnswers++;
+    // save user answer
     storeUserAnswer(button);
+    // switch up style
     button.target.style.color = '#8FB339';
     button.target.style.fontWeight = "500";
+    // remove listeners from all answer buttons
     removeAnswerListeners();
 }
 
@@ -383,7 +397,7 @@ function storeUserAnswer(button) {
     // get correct answer index
     let answer = questions[questionNumber - 1].answer;
     userAnswers.push({
-        // get contents of given answer
+        // get contents of user answer
         givenAnswer: questions[questionNumber - 1].options[button.target.index],
         // get correct answer
         correctAnswer: questions[questionNumber - 1].options[answer - 1],
@@ -401,7 +415,11 @@ function removeAnswerListeners() {
     }
 }
 
+/**
+ * Initialize quiz
+ */
 function initialize() {
+    // initalize global variables
     questionNumber = 1;
     userAnswers = [];
     correctAnswers = 0;
@@ -417,8 +435,13 @@ function initialize() {
     displayQuestion();
 }
 
+/**
+ * Reset quiz
+ */
 function reset() {
+    // remove reset event from next button
     document.getElementById("next-question").removeEventListener("click", reset);
+    // modify html for questions
     buildQuestionPage();
     initialize();
 
@@ -447,7 +470,8 @@ let isQuizDone;
 let incorrectAnswerCounter;
 // boolean to check if answer has been selected
 let selectedAnswer;
-const NUMBER_OF_QUESTIONS = 2;
+// Number of questions in quiz
+const NUMBER_OF_QUESTIONS = 10;
 
 initialize();
 
