@@ -11,24 +11,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
-    <title>Document</title>
+    <title>Road Code Quiz</title>
     <script src="../../js/part2/quiz.js" defer></script>
 </head>
 
 <body>
+    <!-- Overlay of background to add filter to image -->
     <div id="overlay">
+        <!-- Wraps main card to make for better repsonsiveness -->
         <div id="main-wrap">
+            <!-- Main card -->
             <main>
+                <!-- Holds question and image -->
                 <div id="question-container">
                     <div id="question"></div>
                     <img src="" alt="">
                 </div>
+                <!-- Holds answer buttons -->
                 <div id="answer-container">
                     <button class="answer"></button>
                     <button class="answer"></button>
                     <button class="answer"></button>
                     <button class="answer"></button>
                 </div>
+                <!-- better responsiveness wrap -->
                 <footer>
                     <button id="next-question">&#10230</button>
                 </footer>
