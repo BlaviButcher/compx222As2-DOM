@@ -1,7 +1,5 @@
 // TODO: Move questions to independent file
 // remember to set script type='module'
-// TODO: Add reset button at the end
-// TODO: Stop user from moving without answering question
 
 // array of questions to be asked
 let questions = [
@@ -246,19 +244,16 @@ function buildAnswerPage() {
  * Itterate question and repeat display new question
  */
 function nextQuestion() {
-    questionNumber++;
-    displayQuestion();
+    if (selectedAnswer) {
+        questionNumber++;
+        displayQuestion();
+    }
 }
 
 function nextAnswer() {
     questionNumber++;
     displayAnswer();
 }
-
-
-// TODO: Create condition for having all correct answers
-// TODO: Create heading for answers
-// container.insertBefore(newFreeformLabel, container.firstChild);
 
 /**
  *  displays the current question and answer buttons or answers
@@ -354,7 +349,7 @@ function handleEndOfAnswers() {
  * @param {Element} button event caller 
  */
 function incorrectAnswer(button) {
-
+    selectedAnswer = true;
     // add given answer and correct answer to array
     storeUserAnswer(button);
     // make selected button red
@@ -371,6 +366,7 @@ function incorrectAnswer(button) {
  * @param {Element} button 
  */
 function correctAnswer(button) {
+    selectedAnswer = true;
     correctAnswers++;
     storeUserAnswer(button);
     button.target.style.color = '#8FB339';
@@ -411,6 +407,7 @@ function initialize() {
     correctAnswers = 0;
     isQuizDone = false;
     incorrectAnswerCounter = 0;
+    selectedAnswer = false;
 
     // add eventListener for next button - nextQuestion
     let nextButton = document.getElementById("next-question");
@@ -448,6 +445,8 @@ let correctAnswers;
 let isQuizDone;
 // What incorrect answer we are up to
 let incorrectAnswerCounter;
+// boolean to check if answer has been selected
+let selectedAnswer;
 const NUMBER_OF_QUESTIONS = 2;
 
 initialize();
