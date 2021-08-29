@@ -278,6 +278,7 @@ function displayQuestion() {
         nextButton.removeEventListener("click", nextQuestion);
         nextButton.addEventListener("click", nextAnswer);
         displayAnswer();
+        return;
     }
 
     // Fill buttons with options from current question
@@ -306,27 +307,46 @@ function displayQuestion() {
  */
 function displayAnswer() {
 
+    let yourAnswerBody = document.getElementById("your-answer-body");
+    let correctAnswerBody = document.getElementById("correct-answer-body")
+
+
+    if (correctAnswers == NUMBER_OF_QUESTIONS) {
+        image.src = "../../assets/part2/img/perfect-score.jpg";
+        question.textContent = "You are a wizard!!!";
+
+        yourAnswerBody.textContent = "Black Magic";
+        correctAnswerBody.textContent = "Bends at the knee!";
+        handleEndOfAnswers();
+    }
     // if is correct answer - skip
-    if (userAnswers[questionNumber - 1].givenAnswer == userAnswers[questionNumber - 1].correctAnswer) {
+    else if (userAnswers[questionNumber - 1].givenAnswer == userAnswers[questionNumber - 1].correctAnswer) {
+
         questionNumber++;
         displayAnswer();
         return;
+    } else {
+        incorrectAnswerCounter++;
+
+
+        yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
+        correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
+
+        // set image for current question
+        image.src = questions[questionNumber - 1].image;
+        // set question text
+        question.textContent = questions[questionNumber - 1].question;
+
+        // out of incorrect answers
+        if (incorrectAnswerCounter >= NUMBER_OF_QUESTIONS - correctAnswers) handleEndOfAnswers();
     }
-    incorrectAnswerCounter++;
+}
 
-    let yourAnswerBody = document.getElementById("your-answer-body");
-    let correctAnswerBody = document.getElementById("correct-answer-body")
-    yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
-    correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
-
-    // out of incorrect answers
-    if (incorrectAnswerCounter >= NUMBER_OF_QUESTIONS - correctAnswers) {
-
-        let nextButton = document.getElementById("next-question");
-        nextButton.removeEventListener("click", nextAnswer);
-        nextButton.textContent = "↺";
-        nextButton.addEventListener("click", reset);
-    }
+function handleEndOfAnswers() {
+    let nextButton = document.getElementById("next-question");
+    nextButton.removeEventListener("click", nextAnswer);
+    nextButton.textContent = "↺";
+    nextButton.addEventListener("click", reset);
 }
 
 /**
