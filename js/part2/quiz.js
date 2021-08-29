@@ -149,35 +149,10 @@ let questions = [
 // I built this purely for the sake of getting a better grasp of DOM api.
 
 // TODO: buildMainScreen removal?
-function buildMainScreen() {
-    let body = document.getElementsByTagName("body")[0];
-    // clear body
-    body.innerHTML = "";
-
-    // create and assign id to main-wrap <div>
-    let mainWrap = document.createElement("div");
-    mainWrap.setAttribute("id", "main-wrap");
-    body.appendChild(mainWrap);
-
-    let main = document.createElement("main");
-    mainWrap.appendChild(main);
-
-    // build question container and contents
-    let questionContainer = document.createElement("div");
-    questionContainer.setAttribute("id", "question-container");
-
-    let question = document.createElement("div");
-    question.setAttribute("id", "question");
-
-    let img = document.createElement("img");
-
-    questionContainer.appendChild(question);
-    questionContainer.appendChild(img);
-    main.appendChild(questionContainer);
-
+function buildQuestionPage() {
     // build answer-container contents
-    let answerContainer = document.createElement("div");
-    answerContainer.setAttribute("id", "answer-container");
+    let answerContainer = document.getElementById("answer-container");
+    answerContainer.innerHTML = "";
 
     // create buttons
     for (let i = 0; i < 4; i++) {
@@ -185,17 +160,6 @@ function buildMainScreen() {
         button.setAttribute("class", "answer");
         answerContainer.appendChild(button);
     }
-
-    main.appendChild(answerContainer);
-
-    // build footer
-    let footer = document.createElement("footer");
-    let button = document.createElement("button");
-    button.setAttribute("id", "next-question");
-    button.textContent = "Next \u2192";
-
-    footer.appendChild(button);
-    main.appendChild(footer);
 }
 
 /*
@@ -304,16 +268,15 @@ function nextAnswer() {
  */
 function displayQuestion() {
 
-    // When we are beyond questions
+    // When we are out of questions
     if (questionNumber > NUMBER_OF_QUESTIONS) {
         // else move onto answer logic
         buildAnswerPage();
-        isAnswerSheet = true;
         // reset question number
         questionNumber = 1;
         let nextButton = document.getElementById("next-question");
-        nextButton.removeEventListener("click", displayQuestion);
-        nextButton.addEventListener("click", displayAnswer);
+        nextButton.removeEventListener("click", nextQuestion);
+        nextButton.addEventListener("click", nextAnswer);
         displayAnswer();
     }
 
@@ -342,15 +305,6 @@ function displayQuestion() {
  * @returns {null}
  */
 function displayAnswer() {
-    // console.log(questionNumber);
-    // console.log(userAnswers[index]);
-
-    // console.log(userAnswers[index].yourAnswer);
-    // console.log(userAnswers[index].correctAnswer);
-
-    // index that will correspond to data in arrays 
-    // given the current question
-
 
     // if is correct answer - skip
     if (userAnswers[questionNumber - 1].givenAnswer == userAnswers[questionNumber - 1].correctAnswer) {
@@ -359,19 +313,18 @@ function displayAnswer() {
         return;
     }
     incorrectAnswerCounter++;
+
     let yourAnswerBody = document.getElementById("your-answer-body");
     let correctAnswerBody = document.getElementById("correct-answer-body")
-
-
     yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
     correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
 
-    // end of answer dispplay
+    // out of incorrect answers
     if (incorrectAnswerCounter >= NUMBER_OF_QUESTIONS - correctAnswers) {
-        // if answers are done dispalying (if that's logic path we on)
+
         let nextButton = document.getElementById("next-question");
-        nextButton.removeEventListener("click", displayAnswer);
-        nextButton.textContent = "Reset";
+        nextButton.removeEventListener("click", nextAnswer);
+        nextButton.textContent = "↺";
         nextButton.addEventListener("click", reset);
     }
 }
@@ -389,7 +342,7 @@ function incorrectAnswer(button) {
     button.target.style.fontWeight = "500";
 
     // get rid of click events (all events - only has click)
-    removeButtonListeners();
+    removeAnswerListeners();
 
 }
 
@@ -402,7 +355,7 @@ function correctAnswer(button) {
     storeUserAnswer(button);
     button.target.style.color = '#8FB339';
     button.target.style.fontWeight = "500";
-    removeButtonListeners();
+    removeAnswerListeners();
 }
 
 /**
@@ -424,7 +377,7 @@ function storeUserAnswer(button) {
 /**
  * Drops the click event on all buttons
  */
-function removeButtonListeners() {
+function removeAnswerListeners() {
     let buttons = document.getElementsByClassName("answer");
     for (let button of buttons) {
         button.removeEventListener("click", correctAnswer);
@@ -436,18 +389,24 @@ function initialize() {
     questionNumber = 1;
     userAnswers = [];
     correctAnswers = 0;
-    isAnswerSheet = false;
     isQuizDone = false;
     incorrectAnswerCounter = 0;
 
     // add eventListener for next button - nextQuestion
-    document.getElementById("next-question").addEventListener("click", nextQuestion);
+    let nextButton = document.getElementById("next-question");
+    nextButton.addEventListener("click", nextQuestion);
+    nextButton.textContent = "⟶";
     // display first question
     displayQuestion();
 }
 
 function reset() {
+    document.getElementById("next-question").removeEventListener("click", reset);
+    buildQuestionPage();
     initialize();
+
+
+
 }
 
 // **********  MAIN ************
@@ -464,16 +423,12 @@ let question = document.getElementById("question");
 let userAnswers;
 // number of correct answers
 let correctAnswers;
-// denotes whether we are going through answer logic 
-// first questions display for QUESTION_AMOUNT then
-// answers displayed for all incorrect answers
-let isAnswerSheet;
 // is the quiz over - have we went through questions
 // and answers
 let isQuizDone;
 // What incorrect answer we are up to
 let incorrectAnswerCounter;
-const NUMBER_OF_QUESTIONS = 5;
+const NUMBER_OF_QUESTIONS = 2;
 
 initialize();
 
