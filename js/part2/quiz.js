@@ -286,6 +286,11 @@ function nextQuestion() {
     displayQuestion();
 }
 
+function nextAnswer() {
+    questionNumber++;
+    displayAnswer();
+}
+
 
 // TODO: Create condition for having all correct answers
 // TODO: Create heading for answers
@@ -306,65 +311,69 @@ function displayQuestion() {
         isAnswerSheet = true;
         // reset question number
         questionNumber = 1;
-        // will now move through all answers
-
+        let nextButton = document.getElementById("next-question");
+        nextButton.removeEventListener("click", displayQuestion);
+        nextButton.addEventListener("click", displayAnswer);
+        displayAnswer();
     }
-    else if (questionNumber == NUMBER_OF_QUESTIONS) {
-        // if answers are done dispalying (if that's logic path we on)
-        if (isAnswerSheet) {
-            let nextButton = document.getElementById("next-question");
-            nextButton.removeEventListener("click", nextQuestion);
-            nextButton.textContent = "Reset";
-            nextButton.addEventListener("click", reset);
-            return;
-        }
+
+    // Fill buttons with options from current question
+    for (let i = 0; i < buttons.length; i++) {
+        // update button
+        buttons[i].textContent = questions[questionNumber - 1].options[i];
+        buttons[i].index = i;
+        buttons[i].style.color = 'black';
+        buttons[i].style.fontWeight = "400";
+
+        // set event handlers for buttons. Correct vs incorrect answer
+        if (i == questions[questionNumber - 1].answer - 1) {
+            buttons[i].addEventListener("click", correctAnswer);
+        } else buttons[i].addEventListener("click", incorrectAnswer);
     }
-    // index that will correspond to data in arrays 
-    // given the current question
-    let index = questionNumber - 1;
 
-    // if onto answers - display user answer and correct answer
-    if (isAnswerSheet) {
-        console.log(questionNumber);
-        console.log(userAnswers[index]);
-
-        console.log(userAnswers[index].yourAnswer);
-        console.log(userAnswers[index].correctAnswer);
-
-        // if is correct answer - skip
-        if (userAnswers[index].givenAnswer == userAnswers[index].correctAnswer) {
-            questionNumber++;
-            displayQuestion();
-            return;
-        }
-        let yourAnswerBody = document.getElementById("your-answer-body");
-        let correctAnswerBody = document.getElementById("correct-answer-body")
-
-
-        yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
-        correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
-
-        // normal question logic
-    } else {
-        // Fill buttons with options from current question
-        for (let i = 0; i < buttons.length; i++) {
-            // update button
-            buttons[i].textContent = questions[questionNumber - 1].options[i];
-            buttons[i].index = i;
-            buttons[i].style.color = 'black';
-            buttons[i].style.fontWeight = "400";
-
-            // set event handlers for buttons. Correct answer has different answer
-            if (i == questions[questionNumber - 1].answer - 1) {
-                buttons[i].addEventListener("click", correctAnswer);
-            } else buttons[i].addEventListener("click", incorrectAnswer);
-        }
-    }
 
     // set image for current question
-    image.src = questions[index].image;
+    image.src = questions[questionNumber - 1].image;
     // set question text
-    question.textContent = questions[index].question;
+    question.textContent = questions[questionNumber - 1].question;
+}
+/**
+ * 
+ * @returns {null}
+ */
+function displayAnswer() {
+    // console.log(questionNumber);
+    // console.log(userAnswers[index]);
+
+    // console.log(userAnswers[index].yourAnswer);
+    // console.log(userAnswers[index].correctAnswer);
+
+    // index that will correspond to data in arrays 
+    // given the current question
+
+
+    // if is correct answer - skip
+    if (userAnswers[questionNumber - 1].givenAnswer == userAnswers[questionNumber - 1].correctAnswer) {
+        questionNumber++;
+        displayAnswer();
+        return;
+    }
+    incorrectAnswerCounter++;
+    let yourAnswerBody = document.getElementById("your-answer-body");
+    let correctAnswerBody = document.getElementById("correct-answer-body")
+
+
+    yourAnswerBody.textContent = userAnswers[questionNumber - 1].givenAnswer;
+    correctAnswerBody.textContent = userAnswers[questionNumber - 1].correctAnswer;
+
+    // end of answer dispplay
+    if (incorrectAnswerCounter >= NUMBER_OF_QUESTIONS - correctAnswers) {
+        // if answers are done dispalying (if that's logic path we on)
+        let nextButton = document.getElementById("next-question");
+        nextButton.removeEventListener("click", displayAnswer);
+        nextButton.textContent = "Reset";
+        nextButton.addEventListener("click", reset);
+    }
 }
 
 /**
@@ -429,6 +438,7 @@ function initialize() {
     correctAnswers = 0;
     isAnswerSheet = false;
     isQuizDone = false;
+    incorrectAnswerCounter = 0;
 
     // add eventListener for next button - nextQuestion
     document.getElementById("next-question").addEventListener("click", nextQuestion);
@@ -441,10 +451,6 @@ function reset() {
 }
 
 // **********  MAIN ************
-
-
-
-// buildMainScreen();
 
 // corresponds to current question being viewed
 let questionNumber;
@@ -465,6 +471,8 @@ let isAnswerSheet;
 // is the quiz over - have we went through questions
 // and answers
 let isQuizDone;
+// What incorrect answer we are up to
+let incorrectAnswerCounter;
 const NUMBER_OF_QUESTIONS = 5;
 
 initialize();
