@@ -147,7 +147,6 @@ let questions = [
 */
 
 // I built this purely for the sake of getting a better grasp of DOM api.
-// I learned about JSX which was cool, but can't assume marker is using Babel
 
 // TODO: buildMainScreen removal?
 function buildMainScreen() {
@@ -199,6 +198,23 @@ function buildMainScreen() {
     main.appendChild(footer);
 }
 
+/*
+<div id="answer-container">
+    <div id="correct-answer-container"></div>
+    <div id="bottom-answer-wrap">
+        <div id="your-answer" class="answer-page-io">
+            <div id="your-answer-title" class="answer-title">Your Answer</div>
+            div id="your-answer-body" class="answer-body"></div>
+        </div>
+        <div id="correct-answer" class="answer-page-io">
+            <div id="correct-answer-title" class="answer-title">Correct Answer</div>
+            div id="correct-answer-body" class="answer-body"></div>
+
+        </div>
+    </div>
+</div>
+
+*/
 /**
  * Modifies html to handle answer display
  */
@@ -207,6 +223,7 @@ function buildAnswerPage() {
     let answerCont = document.getElementById("answer-container");
     answerCont.innerHTML = "";
 
+    // handle correct answerCount /display
     let correctAnswerCount = document.createElement("div");
     correctAnswerCount.setAttribute("id", "correct-answer-count");
     correctAnswerCount.textContent = `You answered ${correctAnswers} out of ${NUMBER_OF_QUESTIONS}
@@ -218,7 +235,7 @@ function buildAnswerPage() {
     bottomAnswer.setAttribute("id", "bottom-answer-wrap");
     answerCont.appendChild(bottomAnswer);
 
-
+    // answer and correct answer cards
     let yourAnswer = document.createElement("div");
     yourAnswer.setAttribute("class", "answer-page-io");
 
@@ -262,7 +279,7 @@ function buildAnswerPage() {
 
 
 /**
- * Itterate question and repeat call
+ * Itterate question and repeat display new question
  */
 function nextQuestion() {
     questionNumber++;
@@ -277,17 +294,13 @@ function nextQuestion() {
 /**
  *  displays the current question and answer buttons or answers
  *  depending on which stage program is at ie. (isAnswerSheet)
+ * 
  * @param {int} questionNumber current question
  */
 function displayQuestion() {
 
+    // When we are beyond questions
     if (questionNumber > NUMBER_OF_QUESTIONS) {
-
-        // if answers are done return
-        if (isAnswerSheet) {
-            document.getElementById("next-question").removeEventListener("click", nextQuestion);
-            return;
-        }
         // else move onto answer logic
         buildAnswerPage();
         isAnswerSheet = true;
@@ -295,6 +308,16 @@ function displayQuestion() {
         questionNumber = 1;
         // will now move through all answers
 
+    }
+    else if (questionNumber == NUMBER_OF_QUESTIONS) {
+        // if answers are done dispalying (if that's logic path we on)
+        if (isAnswerSheet) {
+            let nextButton = document.getElementById("next-question");
+            nextButton.removeEventListener("click", nextQuestion);
+            nextButton.textContent = "Reset";
+            nextButton.addEventListener("click", reset);
+            return;
+        }
     }
     // index that will correspond to data in arrays 
     // given the current question
@@ -329,6 +352,7 @@ function displayQuestion() {
             buttons[i].textContent = questions[questionNumber - 1].options[i];
             buttons[i].index = i;
             buttons[i].style.color = 'black';
+            buttons[i].style.fontWeight = "400";
 
             // set event handlers for buttons. Correct answer has different answer
             if (i == questions[questionNumber - 1].answer - 1) {
@@ -399,6 +423,23 @@ function removeButtonListeners() {
     }
 }
 
+function initialize() {
+    questionNumber = 1;
+    userAnswers = [];
+    correctAnswers = 0;
+    isAnswerSheet = false;
+    isQuizDone = false;
+
+    // add eventListener for next button - nextQuestion
+    document.getElementById("next-question").addEventListener("click", nextQuestion);
+    // display first question
+    displayQuestion();
+}
+
+function reset() {
+    initialize();
+}
+
 // **********  MAIN ************
 
 
@@ -406,7 +447,7 @@ function removeButtonListeners() {
 // buildMainScreen();
 
 // corresponds to current question being viewed
-let questionNumber = 1;
+let questionNumber;
 // image element
 const image = document.getElementsByTagName("img")[0];
 // array of answer buttons
@@ -414,21 +455,18 @@ const buttons = document.getElementsByClassName("answer");
 // question text
 let question = document.getElementById("question");
 // array of answers user selects
-const userAnswers = [];
+let userAnswers;
 // number of correct answers
-let correctAnswers = 0;
+let correctAnswers;
 // denotes whether we are going through answer logic 
 // first questions display for QUESTION_AMOUNT then
 // answers displayed for all incorrect answers
-let isAnswerSheet = false;
+let isAnswerSheet;
 // is the quiz over - have we went through questions
 // and answers
-let isQuizDone = false;
+let isQuizDone;
 const NUMBER_OF_QUESTIONS = 5;
 
-// add eventListener for next button - nextQuestion
-document.getElementById("next-question").addEventListener("click", nextQuestion);
+initialize();
 
-// display first question
-displayQuestion();
 
