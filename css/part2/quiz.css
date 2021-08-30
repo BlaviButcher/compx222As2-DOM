@@ -1,18 +1,19 @@
 body {
+    /* Fill page as column */
     height: 100vh;
     display: flex;
     flex-direction: column;
+    /* stupid margin */
     margin: 0;
     font-family: 'Noto Sans', sans-serif;
+    /* stretch in ratio the center ie crop to fit */
     background: url('../../assets/part2/img/road.jpg')
     no-repeat center center fixed;
 }
 
-#main-wrap {
-    /* center vertically and horizontally */
-    width: 50%;
-    /* border: 1px solid black; */
-    border-radius: 20px;
+#main-wrap { 
+    width: 50%; /* center vertically and horizontally */
+    border-radius: 20px; /* border: 1px solid black; */
     background: rgba(234, 245, 255, 0.3);
 }
 
@@ -20,30 +21,35 @@ body {
     position: fixed; /* Sit on top of the page content */
     width: 100%; /* Full width (cover the whole page) */
     height: 100%; /* Full height (cover the whole page) */
+    /* Pos */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: #A8E0FF44; 
-    z-index: 0; /* Specify a stack order so it sits behind*/
+    z-index: 0; /* Specify a stack order so it sits behind main card */
 
-    /* center content hori and vert */
+    /* center main card */
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
 main {
+    /* column content */
     display: flex;
     flex-direction: column;
+    /* fit to wrap */
     width: 100%;
     height: 100%;
+    /* center */
     align-items: center;
     
 }
 
 #question {
-    margin: 0 6.5% 0 6.5%;
+    /* horizontal margin */
+    margin: 0 6.5%;
     line-height: 2.2rem;
 }
 
@@ -52,42 +58,53 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* weight */
     flex: 1 1 auto;
 }
 
 #question {
     font-size: 2rem;
-    padding: 0 50px 0 50px;
-    margin: 30px 0 30px 0;
+    /* horizontal padding */
+    padding: 0 50px;
+    /* vertical margin */
+    margin: 30px 0;
     text-align: center;
 }
 
 img {
+    /* increase size and keep ration */
     width: 70%;
     height: auto;
+    /* border curved black */
     border-radius: 10px;
     border: 2px solid black;
 }
 
 #answer-container {
+    /* stop shrinking too far */
     min-height: 200px;
     margin-top: 2rem;
+    /* center content */
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    /* weight */
     flex: 0.9 1 auto;
     
 
 }
 
 #correct-answer-count {
+    /* center content */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 80%;
+    /* weight */
     flex: 2;
     margin-bottom: 20px;
+    /* curve corners */
     border-radius: 10px;
     background-color: #EFEFEF;
     font-size: 1.4rem;
@@ -96,6 +113,7 @@ img {
 #bottom-answer-wrap {
     width: 80%;
     display: flex;
+    /* grow to fit - weight */
     flex: 5 0 auto;
 }
 
@@ -109,6 +127,7 @@ img {
     flex: 1;
 }
 
+/* answer page cards */
 #your-answer {
     margin-right: 5%;
 }
@@ -127,48 +146,53 @@ img {
 }
 
 .answer-title {
+    /* center content */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* grow to fit - weight */
     flex: 2 0 auto;
     font-size: 1.2rem;
 }
 
 .answer-body {
+    /* center */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* grow to fit - weight */
     flex: 5 0 auto;
 }
 
-
-
 button {
     font-size: 1.5rem;
+    /* 80% of container */
     width: 80%;
     border-radius: 10px;
+    /* clean button border */
     box-shadow: none;
     border: none;
     margin-top: 0.6rem;
+    /* add space */
     padding: 7px;
 }
 
+/* change button on hover */
 button:hover {
     background-color: #CCC;
     cursor: pointer;
 }
 
 footer {
+    /* move content to right of div */
     display: flex;
     width: 80%;
     justify-content: flex-end;
+    /* grow to fit weight */
     flex: 0.2;
     height: 5%;
     margin-bottom: 2rem;
-
 }
-
-
 
 #next-question {
     height: 100%;
