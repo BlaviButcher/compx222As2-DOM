@@ -1,7 +1,7 @@
 /**
  * Checks if input keeps to certain constraints
  * @param {String} input The user input 
- * @return {boolean}
+ * @return {boolean} was there an error
  */
 function checkInputErrors(input) {
     if (isNaN(input))
@@ -20,13 +20,14 @@ function checkInputErrors(input) {
 }
 
 /**
- * Draws number of squares requested by user
+ * Draws number of squares requested by argument
  * @param {int} userInput 
  * @param {HTMLElement} container box squares will be drawn in
  */
 function drawSquares(userInput, container) {
     // destroy all children of paper-container
     paperContainer.innerHTML = "";
+    // Create each square and append to container
     for (let i = 0; i < userInput; i++) {
         let square = document.createElement('div');
         square.className = 'square';
@@ -40,6 +41,8 @@ function drawSquares(userInput, container) {
  * @param {int} turn players turn (1 or 2)
  */
 function colorSquare(square, turn) {
+    // no longer reachable
+    square.reachable = false;
     if (turn == 1)
         square.style.backgroundColor = '#83B5D1';
     else square.style.backgroundColor = '#FF6B6B';
@@ -56,6 +59,7 @@ function changeTurns(turnInfo) {
 }
 
 /**
+ * //TODO: Update to use .adjacent property
  * returns if clicked square is adjacent to first
  * @param {Element} square 
  * @param {int} index index of first square selection - this is second
@@ -65,27 +69,35 @@ function isAdjacent(square, index) {
     return (square.index - 1 == index) || (square.index + 1 == index);
 }
 
+/**
+ * creates an array property that stores all adjacent squares for given square
+ * @param {HTMLCollection} squares 
+ */
 function storeAdjacentSquares(squares) {
-    // cases for first and last so underfined isn't stored
+    // special cases for first and last so underfined isn't stored
     squares[0].adjacent = [squares[1]];
     squares[squares.length - 1].adjacent = [squares[squares.length - 2]];
+
     // store adjacent
     for (let i = 1; i < squares.length - 1; i++) {
         squares[i].adjacent = [squares[i - 1], squares[i + 1]];
     }
 }
 /**
- * 
+ * Loops through entire strip and updates reachable squares
+ * ie. has an adjacent reachable sqaure
+ * if no squares are reachable return true
  * @param {HTMLCollectionOf<Element>} squares 
  * @return {boolean} true if nothing is reachable
  */
 function checkReachability(squares) {
+    // is there no reachable squares
     isNoReachable = true;
     for (let square of squares) {
         // if not reachable can skip
         if (!square.reachable) continue;
 
-        // flag
+        // flag - has give square got reachable squares
         let isReachable = false;
         // check if any adjacent squares are reachable
         for (let adjacentSquare of square.adjacent) {
@@ -102,27 +114,32 @@ function checkReachability(squares) {
     return isNoReachable;
 }
 
+
 /**
  * 
- * @param {boolean} turn true for player 1 false for 2
+ * @param {int} turn int given players turn ie 1 or 2
  */
 function gameOver(turn) {
     buttonPlay.innerText = "Play!";
     feedbackContainer.innerText = `Player ${turn} wins! Play again?`;
 }
 
-
+// TODO: Seperate logic
 function playGame(userInput) {
+    // struct to store info regarding turns 
+    //TODO: Give own file - create helper
     let turnInfo = {
-        firstSelectionIndex: -1,
+        firstSelectionIndex: -1, // index of square for first selection
+        // each player makes two selections - this is to count that
         selection: 1,
         playersTurn: 1
     }
 
-    // error handling for userInput
-    if (!checkInputErrors(userInput)) {
+    // error handling for userInput return if error
+    if (!checkInputErrors(userInput))
         return true;
-    }
+
+    //store userInput as int
     userInput = parseInt(userInput);
 
     // Get container that will hold squares
@@ -134,7 +151,7 @@ function playGame(userInput) {
     storeAdjacentSquares(squares);
 
     feedbackContainer.innerText = "Player 1, choose your first square";
-    // using a for loop rather than a foreach as we need an index, becausewant to be able to store the placement 
+    // using a for loop rather than a foreach as we need an index, because want to be able to store the placement 
     // of square
     for (let i = 0; i < squares.length; i++) {
         let square = squares[i];
@@ -142,8 +159,10 @@ function playGame(userInput) {
         square.reachable = true;
         // store placement in strip
         square.index = i;
+        //TODO: Create function
         square.addEventListener("click", () => {
 
+            // if not off limits
             if (square.reachable == true) {
 
                 // if players second pick and chosen square is not adjacent
@@ -151,12 +170,13 @@ function playGame(userInput) {
                     feedbackContainer.innerText = "Your second choice must be adjacent to the first!"
                     return;
                 }
-
+                // color the square
                 colorSquare(square, turnInfo.playersTurn);
-                square.reachable = false;
 
-                // if second selection of players turn
+                // if second selection of players turn and square was clickable
                 if (turnInfo.selection == 2) {
+                    // update square reachabilty
+                    // if nothing reachable
                     if (checkReachability(squares)) {
                         gameOver(turnInfo.playersTurn);
                         return;
@@ -166,6 +186,9 @@ function playGame(userInput) {
 
                     return;
                 }
+
+                // if was first selection
+                // store square index
                 turnInfo.firstSelectionIndex = square.index;
                 turnInfo.selection++;
                 updateFeedbackContainer(turnInfo);
@@ -174,9 +197,14 @@ function playGame(userInput) {
     }
 }
 
-
+/**
+ * Updates div to give players info on turn
+ * @param {Object} turnInfo 
+ */
 function updateFeedbackContainer(turnInfo) {
+    // store which selection it is as string for use
     let selection = turnInfo.selection == 1 ? "first" : "second";
+    // display players turn and selection #
     feedbackContainer.innerText = `Player ${turnInfo.playersTurn}, choose your ${selection} square`;
 }
 
@@ -195,10 +223,7 @@ drawSquares(0, paperContainer);
 // add click event
 buttonPlay.addEventListener("click", element => {
 
-    // if returns an error
+    // returns error for future error handling if necessary
     playGame(document.getElementById("box-count").value);
 
 });
-
-// TODO: Call function after playgame for clean up -- use true false return
-// to see if error occured (empty board somethimes)
