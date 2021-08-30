@@ -259,10 +259,8 @@ function nextAnswer() {
 /**
  *  displays the current question and answer buttons
  * 
- * @param {int} questionNumber current question
  */
 function displayQuestion() {
-
     // When we are out of questions
     if (questionNumber > NUMBER_OF_QUESTIONS) {
         // build answer page
@@ -474,5 +472,3 @@ let selectedAnswer;
 const NUMBER_OF_QUESTIONS = 10;
 
 initialize();
-
-
